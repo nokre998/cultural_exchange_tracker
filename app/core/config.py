@@ -1,5 +1,4 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
 import os
 
 from dotenv import load_dotenv
@@ -20,6 +19,7 @@ class Settings(BaseSettings):
     MAIL_USE_TLS: bool = True
     gmail_user: str
     gmail_app_password: str
+    SECRET_KEY: str
 
     URI: str | None = None
     URL_DATABASE: str | None = None
@@ -30,16 +30,8 @@ class Settings(BaseSettings):
     @property
     def DATABASE_URL_asyncpg(self):
         return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
-    
-    @property
-    def DATABASE_URL_psycopg(self):
-        return f"postgresql+psycopg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
-
-    @property
-    def DATABASE_URL_sync(self):
-        return f"postgresql://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
 
     model_config = SettingsConfigDict(env_file=".env")
-    TOKEN_SECRET_KEY: str
+    SECRET_KEY: str
 
 settings = Settings()
